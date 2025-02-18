@@ -3,17 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class Staff extends Authenticatable
 {
-    use HasFactory;
-    
-    protected $table = 'staff';
-    protected $primaryKey = 'id_staff';
-    protected $fillable = ['nama_staff', 'jabatan', 'password'];
+    use HasFactory, Notifiable;
 
-    protected $hidden = ['password'];
+    protected $table = 'staff'; // Sesuaikan dengan nama tabel
+
+    protected $primaryKey = 'id_staff'; // Primary key di database
+
+    protected $fillable = [
+        'nama_staff',
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    // Hash password otomatis sebelum disimpan ke database
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
 }
-    
